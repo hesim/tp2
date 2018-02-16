@@ -6,10 +6,10 @@
 //  Copyright 2015 Université Laval. Tous droits réservés.
 //
 
-
 #include "lodepng.h"
 #include <iostream>
 #include <stdlib.h>
+#include <omp.h>
 #include <fstream>
 
 #include "Chrono.hpp"

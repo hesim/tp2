@@ -1,4 +1,4 @@
-SOURCES= tp2.cpp lodepng.cpp PACC/Tokenizer.cpp
+SOURCES= tp2.cpp lodepng.cpp PACC/Tokenizer.cpp Chrono.hpp
 
 OBJECTS=$(SOURCES:.cpp=.o)
 

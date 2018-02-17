@@ -50,13 +50,19 @@ void encode(const char* inFilename, vector<unsigned char>& inImage, unsigned int
 
 int main(int inArgc, char *inArgv[])
 {
-    if(inArgc < 3 or inArgc > 4) usage(inArgv[0]);
+    if(inArgc < 3 or inArgc > 4) {
+        usage(inArgv[0]);
+    }
     string lFilename = inArgv[1];
     string lOutFilename;
     if (inArgc == 4)
+    {
         lOutFilename = inArgv[3];
+    }
     else
+    {
         lOutFilename = "output.png";
+    }
 
     // Lire le noyau.
     ifstream lConfig;
@@ -65,7 +71,7 @@ int main(int inArgc, char *inArgv[])
         cerr << "Le fichier noyau fourni (" << inArgv[2] << ") est invalide." << endl;
         exit(1);
     }
-    
+
     PACC::Tokenizer lTok(lConfig);
     lTok.setDelimiters(" \n","");
         
@@ -76,10 +82,13 @@ int main(int inArgc, char *inArgv[])
     int lHalfK = lK/2;
     
     cout << "Taille du noyau: " <<  lK << endl;
-    
+
+    Chrono lChrono(true);
+
     //Lecture du filtre
     double* lFilter = new double[lK*lK];
-        
+
+    // Possible omp ici
     for (int i = 0; i < lK; i++) {
         for (int j = 0; j < lK; j++) {
             lTok.getNextToken(lToken);
@@ -98,6 +107,8 @@ int main(int inArgc, char *inArgv[])
     int fy, fx;
     //Variables temporaires pour les canaux de l'image
     double lR, lG, lB;
+
+    // Possible omp pragma ici
     for(int x = lHalfK; x < (int)lWidth - lHalfK; x++)
     {
         for (int y = lHalfK; y < (int)lHeight - lHalfK; y++)
@@ -121,11 +132,15 @@ int main(int inArgc, char *inArgv[])
             lImage[y*lWidth*4 + x*4 + 2] = (unsigned char)lB;
         }
     }
-    
+
     //Sauvegarde de l'image dans un fichier sortie
     encode(lOutFilename.c_str(),  lImage, lWidth, lHeight);
 
+    lChrono.pause();
+
     cout << "L'image a été filtrée et enregistrée dans " << lOutFilename << " avec succès!" << endl;
+
+    cout << "Temps d'exécution" << lChrono.get();
 
     delete lFilter;
     return 0;

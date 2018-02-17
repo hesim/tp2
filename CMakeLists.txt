@@ -3,12 +3,5 @@ project(tp2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(tp2
-        PACC/Assert.hpp
-        PACC/config.hpp
-        PACC/Tokenizer.cpp
-        PACC/Tokenizer.hpp
-        Chrono.hpp
-        lodepng.cpp
-        lodepng.h
-        tp2.cpp)
+add_custom_target(tp2 COMMAND make run -C ${tp2_SOURCE_DIR}
+        CLION_EXE_DIR=${PROJECT_BINARY_DIR})
